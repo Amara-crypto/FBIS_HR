@@ -166,6 +166,7 @@ const Home = () => {
         boxShadow='0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15)'
         borderRight='10px'
         background='#FFF'
+        maxWidth='1200px'
       >
         <Box justifyContent='space-between' w='100%'>
           <Wrap spacing='30px' justify='space-between'>

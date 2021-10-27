@@ -56,6 +56,18 @@ userSchema.pre('save', async function(next) {
     next()
 })
 
+userSchema.pre( /^find/, function(next){
+    this.find({ active: {$ne : false}});
+    next()
+})
+
+userSchema.pre('save',  function(next){
+    if (!this.isModified('password') || this.isNew) return next()
+
+    this.passwordChangedAt = Date.now() - 1000
+    return next()
+})
+
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword)
 }
@@ -66,14 +78,15 @@ userSchema.methods.changePasswordAfter = function (JWTTimestamp){
 
         return JWTTimestamp < changedTimeStamp
     }
+    return false
 }
 
-userSchema.methods.correctPasswordResetToken = function () {
+userSchema.methods.createPasswordResetToken = function () {
     const resetToken = crypto.randomBytes(32).toString('hex')
 
     this.passwordResetToken = crypto
     .createHash('sha256')
-    .update(resetToke)
+    .update(resetToken)
     .digest('hex')
 
     this.passwordResetExpires = Date.now() + 20 * 60 * 1000

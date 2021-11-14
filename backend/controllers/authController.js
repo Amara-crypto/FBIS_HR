@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const sendEmail = require('../utils/email')
 const crypto = require('crypto')
+const asyncHandler = require('express-async-handler') 
 
 const signToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -35,7 +36,7 @@ exports.signup = catchAsync( async(req, res, next) => {
     
 })
 
-exports.login = catchAsync( async(req, res, next) => {
+exports.login = asyncHandler( async(req, res, next) => {
     const {email, password} = req.body
 
     if (!email || !password) {
@@ -50,8 +51,14 @@ exports.login = catchAsync( async(req, res, next) => {
 
     const token = signToken(user._id)
     res.status(200).json({
-        status: 'success',
-        token
+        data:{
+            accessToken:token,
+            name:user.name,
+            email:user.email,
+            role: user.role
+            // user
+        }, 
+        success: true,
     })
 })
 
@@ -149,6 +156,17 @@ exports.resetPassword = catchAsync(async(req, res, next) => {
     })
 
 })
+
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)){
+            return next(
+                new AppError ('You do not have permission to perform this action', 403)
+            )
+        }
+        next()
+    }
+}
 
 exports.updatePassword = catchAsync ( async (req, res, next) => {
         const user = await User.findById(req.user._id).select('+password')

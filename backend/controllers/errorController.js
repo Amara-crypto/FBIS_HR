@@ -1,4 +1,4 @@
-const AppError = require("../utils/appError")
+const AppError = require('../utils/appError')   
 
 const handleCastErrorDB = error => {
     const message = `Invalid ${error.path}: ${error.value}.`
@@ -26,7 +26,7 @@ const handleJWTExpiredError = () => new AppError('Your Token has expired! Please
 
 
 
-const sendErrorProd = (error, res) => {
+const sendErrorProd = (error,req, res) => {
     if (error.isOperational){
         res.status(error.statusCode).json({
             status: error.status,
@@ -43,7 +43,7 @@ const sendErrorProd = (error, res) => {
 }
 
 
-const sendErrorDev = (error, res) => {
+const sendErrorDev = (error, req, res) => {
     res.status(error.statusCode).json({
         status: error.status,
         error: error,
@@ -56,8 +56,8 @@ module.exports = ( error, req, res, next) => {
     error.statusCode = error.statusCode || 500;
     error.status = error.status || 'error'
 
-    if(process.end.NODE_ENV === 'development'){
-        sendErrorDev(error, res)
+    if(process.env.NODE_ENV === 'development'){
+        sendErrorDev(error,req, res)
     } else if (process.env.NODE_ENV === 'production'){
         // let err = { ...error }
         if(error.name === 'CastError') error = handleCastErrorDB(error)
@@ -66,6 +66,6 @@ module.exports = ( error, req, res, next) => {
         if(error.name === 'JsonWebTokenError') error = handleJWTError()
         if(error.name === 'TokenExpiredError') error = handleJWTExpiredError()
 
-       sendErrorProd(error, res)
+       sendErrorProd(error,req, res)
     }
 }

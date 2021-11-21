@@ -17,14 +17,12 @@ export const HandleAllRequest = async (URL, type, access_token, jsonData) => {
         let postOptions = {
           method: "POST",
           mode: 'cors',
-          //credentials: 'include', //same-origin
+          credentials: 'include', //same-origin
           headers: postHeaders,
           body: JSON.stringify(jsonData),
           redirect: "follow",
         };
-        // console.log(postOptions.body)
         let postResponse =  await fetch ( postUrl, postOptions )
-        // console.log(postResponse.postOptions)
         if (postResponse.status === 401) {
           localStorage.clear();
           sessionStorage.clear();

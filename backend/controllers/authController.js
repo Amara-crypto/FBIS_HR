@@ -13,7 +13,7 @@ const signToken = (id) => {
     })
 }
 
-exports.signup = catchAsync( async(req, res, next) => {
+exports.signup = asyncHandler( async(req, res, next) => {
     // const newUser = await User.create(req.body)
     const newUser = await User.create({
         name: req.body.name,
@@ -36,41 +36,30 @@ exports.signup = catchAsync( async(req, res, next) => {
     
 })
 
-// exports.authLogin = asyncHandler (async (req, res) => {
-//     console.log(req.body)
-//     const body = req.body
-//     res.send({ body })
-//     const { email, password } = req.body;    
+exports.authLogin = asyncHandler (async (req, res) => {
+    // const token = signToken(user._id)
 
-//     const user = await User.findOne({ email }).select('+password')
-//     const token = signToken(user._id)
+        const { email, password } = req.body;    
+        const user = await User.findOne({ email })
 
-//     if (!user || !(await user.correctPassword(password, user.password))) {
-//      res.status(401)
-//     throw new Error ('Invalid password')
-// 	} else {
-//         res.json({
-//             _id: user._id,
-//             name: user.name,
-//             email: user.email,
-//             isAdmin: user.isAdmin,
-//             token: token
-//         })
-// 	}
-  
-// })
+        if ( user && ( user.correctPassword(password))) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                token: signToken(user._id)
+            })
+        } else {
+            res.status(401)
+            throw new Error ('Invalid password')
+        } 
+})
 
-exports.login = asyncHandler ( async(req, res, next) => {
-    
-    console.log('this is body', req.body)
-    const Body = req.body
-    res.send(200).json({
-        message: 'Success',
-    })
-    
-
+exports.login = catchAsync( async(req, res, next) => {
+    // console.log(req.body)
+    // console.log(JSON.stringify (req.body))
     const { email, password } = req.body;
-
+   
     if (!email || !password) {
         return next( new AppError('Please provide email and password', 400))
     }
@@ -83,6 +72,7 @@ exports.login = asyncHandler ( async(req, res, next) => {
 
     const token = signToken(user._id)
     res.status(200).json({
+        status: 'success',
         message: 'Success',
         data:{
             access_token:token,

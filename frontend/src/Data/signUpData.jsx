@@ -1,8 +1,6 @@
 export const signUp = [
-  { placeholder: 'First Name', id: 'firstName' },
-  { placeholder: 'Last Name', id: 'lastName' },
-  { placeholder: 'Phone Number', id: 'phone' },
+  { placeholder: 'Enter Full Name', id: 'name' },
   { placeholder: 'Email Address', id: 'email' },
-  { placeholder: 'Password', id: 'Password' },
-  { placeholder: 'Confirm Password', id: 'confirmPassword' },
+  { placeholder: 'Password', id: 'password' },
+  { placeholder: 'Confirm Password', id: 'passwordConfirm' },
 ]

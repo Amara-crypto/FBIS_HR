@@ -11,6 +11,18 @@ export const loginError = (payload) => ({
   type: 'LOGIN_ERROR',
   payload,
 });
+export const registerUser = (payload) => ({
+  payload,
+  type: 'REGISTER_USER',
+})
+export const registerSuccess = (payload) => ({
+type: 'REGISTER_SUCCESS',
+payload,
+});
+export const registerError = (payload) => ({
+type: 'REGISTER_ERROR',
+payload,
+});
 export const changePasswordError = (payload) => ({
   type: 'CHANGE_PASSWORD_ERROR',
   payload,

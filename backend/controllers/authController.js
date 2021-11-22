@@ -28,6 +28,8 @@ exports.signup = asyncHandler( async(req, res, next) => {
 
     res.status(201).json({
         status:'success',
+        message: 'success',
+        success: true,
         token,
         data: {
             user: newUser

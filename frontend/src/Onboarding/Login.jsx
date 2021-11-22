@@ -81,7 +81,7 @@ function LoginScreen() {
 
   useEffect(() => {
     if (isLogged === true) {
-      history.replace('/dashboard')
+      history.replace('/home')
     } else {
       history.replace('/')
     }

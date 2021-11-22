@@ -5,6 +5,11 @@ import { Input, InputGroup, Button } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { HandleAllRequest } from '../Api/fetchApi'
 import { useMutation } from 'react-query'
+import { useToast } from '@chakra-ui/react'
+import { useDispatch, useSelector } from 'react-redux'
+import { registerError, registerSuccess } from '../reducer/Action'
+import { useEffect } from 'react'
+import { useHistory } from 'react-router'
 
 function UserSignUp() {
   const [inputChange, setInput] = React.useState({})
@@ -18,22 +23,66 @@ function UserSignUp() {
   }
 
   //**end */
+  let history = useHistory()
+  const toast = useToast()
+  const dispatch = useDispatch()
+  const { isRegister } = useSelector((state) => state.RegisterReducer)
 
   //** makes sign in request */
   const sign_Up = useMutation(
-    (data) => HandleAllRequest('auth/register', 'post', '', data),
+    (data) => HandleAllRequest('/api/v1/users/signup', 'post', '', data),
     {
       onSuccess: (data, variables, context) => {
-        // console.log(data.data);
-        // console.log(data, variables, context);
+        let s = data.success
+        let m = data.message
+        let d = data
+        if (s) {
+          dispatch(registerSuccess(d))
+          toast({
+            position: 'top-right',
+            title: 'Success.',
+            description: 'm',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+          })
+        } else {
+          dispatch(registerError())
+          toast({
+            position: 'top-right',
+            title: 'Error. message',
+            description: m,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+          })
+        }
+
+        console.log(data.data)
+        console.log(data, variables, context)
       },
-      onError: (error, variables, context) => {
-        // An error happened!
-        console.log(error, variables, context)
+      onError: (error) => {
+        dispatch(registerError())
+        toast({
+          position: 'top-right',
+          title: 'Error.',
+          description: `${error}`,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
       },
     }
   )
   //**end */
+
+  useEffect(() => {
+    if (isRegister === true) {
+      history.push('/')
+    } else {
+      history.replace('/signUp')
+    }
+  }, [history, isRegister])
 
   return (
     <div className='onBoardingContainer'>
@@ -51,15 +100,11 @@ function UserSignUp() {
                 value={
                   data.id === 'email'
                     ? inputChange.email
-                    : data.id === 'phone'
-                    ? inputChange.phone
-                    : data.id === 'firstName'
-                    ? inputChange.firstName
-                    : data.id === 'lastName'
+                    : data.id === 'name'
                     ? inputChange.lastName
                     : data.id === 'password'
                     ? inputChange.password
-                    : inputChange.confirmPassword
+                    : inputChange.passwordConfirm
                 }
                 placeholder={data.placeholder}
                 onChange={(e) => handleInputChange(e)}

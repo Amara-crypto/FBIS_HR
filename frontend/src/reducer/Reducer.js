@@ -4,6 +4,9 @@ const {
     LOGIN_USER,
     LOGIN_ERROR,
     LOGIN_SUCCESS,
+    REGISTER_USER,
+    REGISTER_ERROR,
+    REGISTER_SUCCESS,
     CHANGE_PASSWORD,
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_ERROR,
@@ -13,6 +16,7 @@ const {
 
 const initialState = {
     isLogged:false,
+    isRegister:false,
     userData:{},
     userDataInput:{},
     isError:false,
@@ -47,6 +51,7 @@ export const LoginReducer = (state= initialState, { type, payload }) => {
                 key: null 
             };
 
+
         case CHANGE_PASSWORD:
             return { ...state, loading: true, change:false}
 
@@ -70,4 +75,35 @@ export const LoginReducer = (state= initialState, { type, payload }) => {
             return state
     }
     
+}
+
+
+export const RegisterReducer = (state = initialState, {type, payload}) => {
+    switch(type) {
+
+        case REGISTER_USER: 
+            return {
+                ...state,
+                userDataInput: payload, 
+                loading: true,
+                isLogged: false, 
+            }
+            case REGISTER_SUCCESS: 
+            return {
+                ...state,
+                userDataInput: payload, 
+                isLogged: false, 
+                loading:false,  
+                registerError: {}
+            }
+            case REGISTER_ERROR: 
+            return {
+                ...state, 
+                loading: false,
+                isLogged: false, 
+                loginError: payload,
+            }
+            default: 
+                return state
+    }
 }

@@ -2,9 +2,10 @@
 /* eslint-disable import/no-anonymous-default-export */
 import React, { Suspense, lazy } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route }from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect }from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import { createStore } from 'redux'
+import { useSelector } from 'react-redux';
 import { rootReducer } from './reducer/rootReducer';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { persistStore, persistReducer } from 'redux-persist'
@@ -27,6 +28,15 @@ const LeaveRequest = lazy(() => import ('./Dashboard/leaveRequest'))
 const Forms= lazy(() => import ('./Dashboard/forms'))
 
 function App() {
+  const { isLogged} = useSelector((state) => state.LoginReducer)
+
+  // const { user} = userData;
+  // const roles = user?.roles
+
+  const redirect = () => {
+    return <Redirect to='/' />
+  }
+
   return (
    <Router>
      <Suspense fallback={null}>
@@ -34,6 +44,8 @@ function App() {
        <Route exact path='/' component={Login}/>
        <Route exact path='/forgotPassword' component={ForgotPassword}/>
        <Route exact path='/signUp' component={SignUp}/>
+       {!isLogged ? ( redirect()) :  (
+       <Switch>
        <Route exact path='/home' component={Home}/>
        <Route exact path='/adminManagement' component={AdminManagement}/>
        <Route exact path='/companyManagement' component={CompanyManagement}/>
@@ -42,6 +54,8 @@ function App() {
        <Route exact path='/leave' component={LeavePolicy}/>
        <Route exact path='/leaveRequest' component={LeaveRequest}/>
        <Route exact path='/forms' component={Forms}/>
+      </Switch>)
+      }
       </Switch>
      </Suspense>
    </Router>
@@ -52,7 +66,7 @@ const persistConfig = {
 	key: 'root',
 	storage: storageSession,
 	stateReconciler: autoMergeLevel2,
-	blacklist: ['SignUpReducer'],
+	blacklist: ['RegisterReducer'],
 }
 
 

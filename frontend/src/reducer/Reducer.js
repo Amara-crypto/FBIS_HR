@@ -17,10 +17,11 @@ const {
 const initialState = {
     isLogged:false,
     isRegister:false,
-    userData:{},
-    userDataInput:{},
+    userData: {},
+    userDataInput: {},
     isError:false,
     loading:false,
+    roles: '',
 }
 
 

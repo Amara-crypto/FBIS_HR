@@ -17,6 +17,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
+    "react-items-carousel": "^2.8.0",
     "react-phone-number-input": "^3.1.35",
     "react-query": "^3.27.0",
     "react-redux": "^7.2.5",

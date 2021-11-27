@@ -20,7 +20,8 @@ import {
 } from '@chakra-ui/react'
 import { FiEye, FiEyeOff } from 'react-icons/fi'
 import { PASS } from './Input'
-import { useSelector } from 'react-redux'
+import { changePasswordSuccess } from '../reducer/Action'
+import { useSelector, useDispatch } from 'react-redux'
 import PhoneInput from 'react-phone-number-input'
 import { useMutation } from 'react-query'
 import { HandleAllRequest } from '../Api/fetchApi'
@@ -29,25 +30,34 @@ function ChangePassword({ isOpen, onClose }) {
   const [inputchange, setInput] = React.useState({})
   const [show, setShow] = React.useState(false)
   const { userData } = useSelector((state) => state.LoginReducer)
-  const { accessToken } = userData
+  const { access_token } = userData
 
   const handleClick = () => setShow(!show)
   const toast = useToast()
+  const dispatch = useDispatch()
 
   const postData = {
-    currentPassword: inputchange.currentPass,
-    newPassword: inputchange.pin,
-    newPassword_confirmation: inputchange.pin,
+    passwordCurrent: inputchange.passwordCurrent,
+    password: inputchange.password,
+    passwordConfirm: inputchange.passwordConfirm,
   }
 
   const changePass = useMutation(
     (data) =>
-      HandleAllRequest('/api/changePassword', 'Post', accessToken, data),
+      HandleAllRequest(
+        '/api/v1/users/updateMyPassword',
+        'patch',
+        access_token,
+        data
+      ),
     {
       onSuccess: (data) => {
+        console.log(data)
         let s = data.success
         let m = data.message
+        let d = data
         if (s) {
+          dispatch(changePasswordSuccess(d))
           toast({
             position: 'top-right',
             title: 'Success',
@@ -59,7 +69,7 @@ function ChangePassword({ isOpen, onClose }) {
         } else {
           toast({
             position: 'top-right',
-            title: 'Error',
+            title: 'Error ',
             description: m,
             status: 'error',
             duration: 9000,
@@ -111,11 +121,11 @@ function ChangePassword({ isOpen, onClose }) {
                   >
                     {data.title}
                   </Text>
-                  <form autoComplet='off' style={{ width: '100%' }}>
+                  <form autoComplete='off' style={{ width: '100%' }}>
                     <InputGroup>
                       <Input
                         type={
-                          data.id !== 'pin'
+                          data.id === 'passwordCurrent'
                             ? 'text'
                             : show
                             ? 'text'
@@ -125,7 +135,7 @@ function ChangePassword({ isOpen, onClose }) {
                         onChange={(e) => handleInputChange(e)}
                         id={data.id}
                       />
-                      {data.id === 'pin' && (
+                      {data.id !== 'passwordCurrent' && (
                         <InputRightElement width='4.5rem'>
                           <Icon
                             as={show ? FiEyeOff : FiEye}
@@ -197,6 +207,7 @@ function ChangePassword({ isOpen, onClose }) {
             color='#fff'
             width='40%'
             onClick={() => {
+              console.log(postData)
               changePass.mutate(postData)
             }}
           >

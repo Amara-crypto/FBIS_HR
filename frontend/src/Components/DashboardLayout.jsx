@@ -19,14 +19,13 @@ import {
   Divider,
   useDisclosure,
 } from '@chakra-ui/react'
-// import { Dashboard } from '@material-ui/icons'
 import { ReactComponent as DashIcon } from '../Assets/outline-dashboard-24px.svg'
 import { ReactComponent as StaffIcon } from '../Assets/retailers.svg'
 import { ReactComponent as ContractIcon } from '../Assets/paymentHistory.svg'
 import { ReactComponent as ReplaceIcon } from '../Assets/RequestFund.svg'
 import { ReactComponent as BuildIcon } from '../Assets/classes.svg'
 import ChangePass from './ChangePassword'
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const { Header, Content, Sider } = Layout
 const { SubMenu } = Menu
@@ -40,8 +39,10 @@ function DashboardLayout({ children, title, size }) {
     onOpen: onOpenPass,
     onClose: onClosePass,
   } = useDisclosure()
-  //   const { userData } = useSelector((state) => state.LoginReducer)
-  //   const { user } = userData
+  const { userData } = useSelector((state) => state.LoginReducer)
+
+  const { data } = userData
+  // console.log(user)
 
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1)
@@ -65,7 +66,7 @@ function DashboardLayout({ children, title, size }) {
   //   setOpenKeys([selectedKeys])
   // }, [selected, selectedKeys])
 
-  // const { username, email } = user
+  const { user } = data
 
   return (
     <div className='userLayout'>
@@ -92,7 +93,7 @@ function DashboardLayout({ children, title, size }) {
                   background='#fff'
                   as={IconButton}
                 >
-                  <Avatar size='sm' name='username' bg='green.200' />
+                  <Avatar size='sm' name={`${user.name}`} bg='green.600' />
                 </MenuButton>
                 <MenuList>
                   <MenuGroup
@@ -103,10 +104,10 @@ function DashboardLayout({ children, title, size }) {
                         </WrapItem>
                         <WrapItem flexDirection='column'>
                           <Text color='#5d6e76' mb='20px' fontSize='18px'>
-                            {/* {username} */}
+                            {user.name}
                           </Text>
                           <Text color='#5d6e76' fontSize='14px'>
-                            {/* {email} */}
+                            {user.email}
                           </Text>
                         </WrapItem>
                       </Wrap>
@@ -179,7 +180,7 @@ function DashboardLayout({ children, title, size }) {
               />
               <Text color='#9EA0A5' fontSize='16px'>
                 {' '}
-                Username
+                {user.name}
               </Text>
               <Divider />
             </Box>
@@ -196,19 +197,19 @@ function DashboardLayout({ children, title, size }) {
               onOpenChange={onOpenChange}
             >
               <Menu.Item key='1' icon={<DashIcon />}>
-                <Link to='/dashboard'>Dashboard</Link>
+                <Link to='/home'>Dashboard</Link>
               </Menu.Item>
               <SubMenu key='sub1' icon={<BuildIcon />} title='Management'>
                 <Menu.Item key='2'>
-                  <Link to='/company_Management'>Company Management</Link>
+                  <Link to='/companyManagement'>Company Management</Link>
                 </Menu.Item>
                 <Menu.Item key='3'>
-                  <Link to='/admin_Management'>Admin Management</Link>
+                  <Link to='/adminManagement'>Admin Management</Link>
                 </Menu.Item>
               </SubMenu>
               <SubMenu key='sub2' icon={<StaffIcon />} title='HR Management'>
                 <Menu.Item key='4'>
-                  <Link to='/employee_Management'>Employee Management</Link>
+                  <Link to='/employeeManagement'>Employee Management</Link>
                 </Menu.Item>
                 <Menu.Item key='5'>
                   <Link to='/contracts'>Contracts</Link>
@@ -219,7 +220,7 @@ function DashboardLayout({ children, title, size }) {
                   <Link to='/leave'>Leave Policy</Link>
                 </Menu.Item>
                 <Menu.Item key='7'>
-                  <Link to='/leave_request'>Leave Request</Link>
+                  <Link to='/leaveRequest'>Leave Request</Link>
                 </Menu.Item>
               </SubMenu>
               <SubMenu key='sub5' icon={<ReplaceIcon />} title='Forms'>

@@ -9,30 +9,40 @@ import {
   Divider,
   Link,
 } from '@chakra-ui/layout'
-import { ReactComponent as Diamond } from '../Assets/cut-diamond.svg'
-import { ReactComponent as Rocket } from '../Assets/space-shuttle.svg'
-import { ReactComponent as Bulb } from '../Assets/light-bulb.svg'
+import { ReactComponent as Mission } from '../Assets/mision.svg'
+import { ReactComponent as Vision } from '../Assets/vision.svg'
+import { ReactComponent as Principle } from '../Assets/Principles.svg'
+import BeamsityLogo from '../Assets/beamsity logo.png'
+import Beamtunes from '../Assets/beamtunes logo.png'
+import Retopa from '../Assets/retopa logo.png'
+import RetailCode from '../Assets/retailcode logo.png'
+import { ReactComponent as ArrowLeft } from '../Assets/arrowLeft.svg'
+import { ReactComponent as ArrowRight } from '../Assets/arrowRight.svg'
 import { useMediaQuery, Center, Image } from '@chakra-ui/react'
 import DashboardLayout from '../Components/DashboardLayout'
-import { useSelector } from 'react-redux'
-import { useQuery } from 'react-query'
-import { HandleAllRequest } from '../Api/fetchApi'
+import ItemsCarousel from 'react-items-carousel'
+import '../Styles/home.scss'
+// import { useSelector } from 'react-redux'
+// import { useQuery } from 'react-query'
+// import { HandleAllRequest } from '../Api/fetchApi'
 import { NEWS_API_KEY } from '../config'
 
 const Home = () => {
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)')
   // const [isLargerThan1284] = useMediaQuery('(min-width: 1284px)')
   // const [isLessThan1440] = useMediaQuery('(max-width: 1440px)')
+  const [activeItemIndex, setActiveItemIndex] = useState(0)
+  const chevronWidth = 40
   const [articles, setArticles] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [articlePerPage] = useState(3)
 
-  const { userData } = useSelector((state) => state.LoginReducer)
-  const { accessToken } = userData
+  // const { userData } = useSelector((state) => state.LoginReducer)
+  // const { accessToken, user } = userData
 
-  const { data } = useQuery('profile', () => {
-    return HandleAllRequest(`/api/auth/profile`, 'get', accessToken)
-  })
+  // const { data } = useQuery('profile', () => {
+  //   return HandleAllRequest(`/api/auth/profile`, 'get', accessToken)
+  // })
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -92,7 +102,7 @@ const Home = () => {
         >
           <Box
             p={5}
-            width='25%'
+            width='24%'
             background='#FFF'
             border='3px solid rgba(63, 63, 68, 0.005)'
             justifyContent='Center'
@@ -100,8 +110,8 @@ const Home = () => {
             boxShadow='0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15)'
           >
             <Center flexDirection='column'>
-              <Box>
-                <Rocket />
+              <Box width='100%' maxWidth='200px'>
+                <Mission />
               </Box>
 
               <Text fontSize='32px' fontWeight='600px' color='#56A55C'>
@@ -115,7 +125,7 @@ const Home = () => {
 
           <Box
             p={5}
-            width='25%'
+            width='24%'
             background='#FFF'
             border='3px solid rgba(63, 63, 68, 0.005)'
             justifyContent='Center'
@@ -123,8 +133,8 @@ const Home = () => {
             boxShadow='0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15)'
           >
             <Center flexDirection='column'>
-              <Box>
-                <Bulb />
+              <Box width='100%' maxWidth='200px'>
+                <Vision />
               </Box>
 
               <Text fontSize='32px' fontWeight='600px' color='#56A55C'>
@@ -137,7 +147,7 @@ const Home = () => {
           </Box>
           <Box
             p={5}
-            width='25%'
+            width='24%'
             background='#FFF'
             border='3px solid rgba(63, 63, 68, 0.005)'
             justify='center'
@@ -145,14 +155,15 @@ const Home = () => {
             boxShadow='0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15)'
           >
             <Center flexDirection='column'>
-              <Box>
-                <Diamond />
+              <Box width='100%' maxWidth='200px'>
+                <Principle />
               </Box>
               <Text fontSize='32px' fontWeight='600px' color='#56A55C'>
-                Goal
+                Guiding Principles
               </Text>
               <Text font='22px' mt='10px'>
-                Unleashing the retail advantage for our clients
+                Experience, Listen, Build Together, Reimagine, Create value and
+                a user-centric approach
               </Text>
             </Center>
           </Box>
@@ -166,7 +177,7 @@ const Home = () => {
         boxShadow='0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15)'
         borderRight='10px'
         background='#FFF'
-        maxWidth='1200px'
+        // maxWidth='1200px'
       >
         <Box justifyContent='space-between' w='100%'>
           <Wrap spacing='30px' justify='space-between'>
@@ -175,18 +186,99 @@ const Home = () => {
               border='2px solid #f4f4f4'
               justify='center'
               borderRadius='5px'
-              maxW='710px'
-              w='100%'
+              // maxW='640px'
+              w='60%'
               px={8}
               p={4}
               mb={16}
               boxShadow='0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15)'
             >
-              <Wrap
-                spacing='90px'
-                align='center'
-                justifyContent='space-between'
+              <div
+                // spacing='90px'
+                // align='center'
+                // p={4}
+                // m={2}
+                // justifyContent='space-between'
+                style={{
+                  width: '90%',
+                  padding: '5px 10px',
+                }}
+                // style={{ padding: `0 ${chevronWidth}px` }}
               >
+                <ItemsCarousel
+                  requestToChangeActive={setActiveItemIndex}
+                  activeItemIndex={activeItemIndex}
+                  numberOfCards={2}
+                  gutter={40}
+                  showSlither={true}
+                  firstAndLastGutter={true}
+                  activePosition={'center'}
+                  leftChevron={<button>{<ArrowLeft />}</button>}
+                  rightChevron={<button>{<ArrowRight />}</button>}
+                  outsideChevron={true}
+                  freeScrolling={true}
+                  chevronWidth={chevronWidth}
+                >
+                  <div className='overlayContainer'>
+                    <Image w={60} src={RetailCode} />
+                    <div className='overlay'>
+                      <div className='text'>
+                        <span className='textHeader'>Payment</span>
+                        <p className='textPara'>
+                          Airtime recharge and payments just got easier With
+                          RetailCode, we were able to revolutionize the way
+                          airtime is sold and purchased in Nigeria by creating a
+                          USSD product that allows consumers to buy
+                          electronically from retailers and vice versa. Papers
+                          are not a factor thereby helping us achieve a greener
+                          society.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='overlayContainer'>
+                    <Image w={60} src={BeamsityLogo} />
+                    <div className='overlay'>
+                      <div className='text'>
+                        <span className='textHeader'> Beamsity</span>
+                        <p className='textPara'>Some missing text</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='overlayContainer'>
+                    <Image w={60} src={Retopa} />
+                    <div className='overlay'>
+                      <div className='text'>
+                        <span className='textHeader'> Recharge</span>
+                        <p className='textPara'>
+                          Get your recharge codes straight to your phone Retopa
+                          is an incentivized Electronic Voucher and Bills
+                          Distribution Technology for both consumers and
+                          retailers. Retopa uses a POS terminal to seamlessly
+                          provide offline top-up / payment services riding on
+                          NFC and QR Codes technologies.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='overlayContainer'>
+                    <Image w={60} src={Beamtunes} />
+                    <div className='overlay'>
+                      <div className='text'>
+                        <span className='textHeader'>Offiline Streaming </span>
+                        <p className='textPara'>
+                          Streaming anywhere and every where to countless musics
+                          Beam allows users to connect, share and listen on
+                          demand. This is a technologically advanced, innovative
+                          and creative platform that consumers access digital
+                          information like lectures, news, music all around the
+                          world.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </ItemsCarousel>
+                {/* 
                 <Center
                   flexDirection='column'
                   justifyContent='center'
@@ -201,8 +293,8 @@ const Home = () => {
                   <Text fontSize='24px' mt='2'>
                     Beamsity
                   </Text>
-                </Center>
-                <Center
+                </Center> */}
+                {/* <Center
                   flexDirection='column'
                   justifyContent='center'
                   alignItems='center'
@@ -216,13 +308,13 @@ const Home = () => {
                   <Text fontSize='24px' mt='2'>
                     RetailCode
                   </Text>
-                </Center>
-              </Wrap>
+                </Center> */}
+              </div>
             </Flex>
             <Wrap
               w='100%'
               direction='column'
-              maxW='520px'
+              maxW='480px'
               boxShadow='0px 1px 0px rgba(63, 63, 68, 0.05), 0px 1px 3px rgba(63, 63, 68, 0.15)'
             >
               {currentArticles.map((article, index) => {

@@ -22,6 +22,7 @@ export const HandleAllRequest = async (URL, type, access_token, jsonData) => {
           body: JSON.stringify(jsonData),
           redirect: "follow",
         };
+        console.log(postOptions)
         let postResponse =  await fetch ( postUrl, postOptions )
         if (postResponse.status === 401) {
           localStorage.clear();

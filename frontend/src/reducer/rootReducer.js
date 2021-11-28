@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-import { LoginReducer, RegisterReducer } from '../reducer/Reducer'
+import { LoginReducer, RegisterReducer, ResetPasswordReducer } from '../reducer/Reducer'
 
 export const rootReducer = combineReducers ({
     LoginReducer,
-    RegisterReducer
+    RegisterReducer,
+    ResetPasswordReducer
 })

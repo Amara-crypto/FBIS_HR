@@ -7,6 +7,9 @@ const {
     REGISTER_USER,
     REGISTER_ERROR,
     REGISTER_SUCCESS,
+    PASSWORD_RESET,
+    PASSWORD_RESET_SUCCESS,
+    PASSWORD_RESET_ERROR,
     CHANGE_PASSWORD,
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_ERROR,
@@ -17,6 +20,7 @@ const {
 const initialState = {
     isLogged:false,
     isRegister:false,
+    isReset: false,
     userData: {},
     userDataInput: {},
     isError:false,
@@ -94,6 +98,7 @@ export const RegisterReducer = (state = initialState, {type, payload}) => {
                 ...state,
                 userDataInput: payload, 
                 isLogged: false, 
+                isRegister: true,
                 loading:false,  
                 registerError: {}
             }
@@ -102,9 +107,39 @@ export const RegisterReducer = (state = initialState, {type, payload}) => {
                 ...state, 
                 loading: false,
                 isLogged: false, 
-                loginError: payload,
+                registerError: payload,
             }
             default: 
                 return state
+    }
+}
+
+
+export const ResetPasswordReducer = ( state = initialState, { type, payload}) => {
+    switch (type) {
+
+        case PASSWORD_RESET:
+            return {
+                ...state,
+                loading: true,
+                userDataInput: payload,
+                isLogged: false,
+            }
+        case PASSWORD_RESET_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                // userData: payload,
+                userDataInput: { },
+                isReset: true
+            }
+        case PASSWORD_RESET_ERROR:
+            return {
+                ...state,
+                loading:false,
+                isLogged: false
+            }
+        default: 
+            return state
     }
 }

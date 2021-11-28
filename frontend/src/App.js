@@ -18,6 +18,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 const Login = lazy(() => import ('./Onboarding/Login'))
 const ForgotPassword = lazy(() => import ('./Onboarding/ForgotPassword'))
 const SignUp= lazy(() => import ('./Onboarding/signUp'))
+const ResetPassword = lazy(() => import ('./Onboarding/ResetPassword'))
 const Home= lazy(() => import ('./Dashboard/home'))
 const AdminManagement = lazy(() => import ('./Dashboard/adminManagement'))
 const CompanyManagement = lazy(() => import ('./Dashboard/companyManagement'))
@@ -44,6 +45,7 @@ function App() {
        <Route exact path='/' component={Login}/>
        <Route exact path='/forgotPassword' component={ForgotPassword}/>
        <Route exact path='/signUp' component={SignUp}/>
+       <Route exact path='/resetPassword' component={ResetPassword}/>
        {!isLogged ? ( redirect()) :  (
        <Switch>
        <Route exact path='/home' component={Home}/>

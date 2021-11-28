@@ -185,11 +185,12 @@ exports.resetPassword = catchAsync(async(req, res, next) => {
     user.passwordResetExpires = undefined;
     await user.save();
 
-    const token = signToken(user._id)
-    res.status(200).json({
-        status: 'success', 
-        token 
-    })
+    // const token = signToken(user._id)
+    // res.status(200).json({
+    //     status: 'success', 
+    //     token 
+    // })
+    createSendToken(user, 200, res)
 
 })
 

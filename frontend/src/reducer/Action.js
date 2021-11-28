@@ -29,17 +29,17 @@ type: 'REGISTER_ERROR',
 payload,
 });
 
-export const userProfile = (payload) => ({
+export const passwordReset = (payload) => ({
   payload,
   type: 'REGISTER_USER',
 })
 
-export const userProfileSuccess = (payload) => ({
+export const passwordResetSuccess = (payload) => ({
 type: 'REGISTER_SUCCESS',
 payload,
 });
 
-export const userProfileError = (payload) => ({
+export const passwordResetError = (payload) => ({
 type: 'REGISTER_ERROR',
 payload,
 });

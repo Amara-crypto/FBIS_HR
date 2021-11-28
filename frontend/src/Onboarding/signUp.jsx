@@ -1,7 +1,13 @@
 import React from 'react'
 import '../Styles/Onboarding.scss'
 import { signUp } from '../Data/signUpData'
-import { Input, InputGroup, Button } from '@chakra-ui/react'
+import {
+  Input,
+  InputGroup,
+  Button,
+  InputRightElement,
+  Icon,
+} from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { HandleAllRequest } from '../Api/fetchApi'
 import { useMutation } from 'react-query'
@@ -10,9 +16,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { registerError, registerSuccess } from '../reducer/Action'
 import { useEffect } from 'react'
 import { useHistory } from 'react-router'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
 
 function UserSignUp() {
+  const [show, setShow] = React.useState(false)
   const [inputChange, setInput] = React.useState({})
+
+  const handleClick = () => setShow(!show)
+
   //   let history = useHistory()
   //**gets sign in  data from user */
   const handleInputChange = (e) => {
@@ -109,11 +120,11 @@ function UserSignUp() {
                 placeholder={data.placeholder}
                 onChange={(e) => handleInputChange(e)}
               />
-              {/* {data.id === "password" && (
-                <InputRightElement width="4.5rem">
+              {data.id === ('password' || 'passwordConfirm') && (
+                <InputRightElement width='4.5rem'>
                   <Icon as={show ? FiEyeOff : FiEye} onClick={handleClick} />
                 </InputRightElement>
-              )} */}
+              )}
             </InputGroup>
           ))}
           <div className='terms'>
@@ -136,7 +147,7 @@ function UserSignUp() {
               sign_Up.mutate(inputChange)
             }}
           >
-            Next
+            Sign Up
           </Button>
           <div className='bottomItem'>
             Already a member?
